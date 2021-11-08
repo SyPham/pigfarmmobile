@@ -2,44 +2,37 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:pigfarm/models/auth.dart';
+import 'package:http/http.dart' as http;
 
 enum AuthenticationStatus { unknown, authenticated, unauthenticated }
 
 class AuthenticationRepository {
-  var apiUrl =
-      Uri.http('http://10.4.5.174:62', '/api/auth/login', {'q': '{http}'});
-  Future<AuthResponse> authenticate(res) async {
-    Map data = {'username': res.username, 'password': res.password};
-
-    final Response response = await post(
-      apiUrl,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(data),
-    );
-    if (response.statusCode == 200) {
+  final _controller = StreamController<AuthenticationStatus>();
+  Future<void> logIn(
+      {required String username, required String password}) async {
+    Map data = {'username': username, 'password': password};
+    var client = new http.Client();
+    try {
+      final Response response = await client.post(
+        Uri.parse('http://10.4.5.174:62/api/auth/login'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(data),
+      );
+      print(AuthResponse.fromJson(json.decode(response.body))
+          .toJson()
+          .toString());
       _controller.add(AuthenticationStatus.authenticated);
-      return AuthResponse.fromJson(json.decode(response.body));
-    } else {
-      throw Exception('Failed to post cases');
+    } finally {
+      client.close();
     }
   }
-
-  final _controller = StreamController<AuthenticationStatus>();
 
   Stream<AuthenticationStatus> get status async* {
     await Future<void>.delayed(Duration(seconds: 1));
     yield AuthenticationStatus.unauthenticated;
     yield* _controller.stream;
-  }
-
-  Future<void> logIn(
-      {required String username, required String password}) async {
-    await Future.delayed(
-      Duration(milliseconds: 300),
-      () => _controller.add(AuthenticationStatus.authenticated),
-    );
   }
 
   void logOut() {

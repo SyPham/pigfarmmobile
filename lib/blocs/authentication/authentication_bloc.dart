@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pigfarm/models/user.dart';
 import 'package:pigfarm/repositories/authentication_repository.dart';
+import 'package:pigfarm/repositories/secure_storage.dart';
 import 'package:pigfarm/repositories/user_repository.dart';
 
 part 'authentication_event.dart';
@@ -12,13 +13,13 @@ part 'authentication_state.dart';
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   final AuthenticationRepository _authenticationRepository;
-  final UserRepository _userRepository;
+  final SecureStorage _userRepository;
   late StreamSubscription<AuthenticationStatus>
       _authenticationStatusSubscription;
 
   AuthenticationBloc({
     required AuthenticationRepository authenticationRepository,
-    required UserRepository userRepository,
+    required SecureStorage userRepository,
   })  : _authenticationRepository = authenticationRepository,
         _userRepository = userRepository,
         super(const AuthenticationState.unknown()) {

@@ -1,8 +1,16 @@
+import 'package:pigfarm/repositories/authentication_repository.dart';
+import 'package:pigfarm/repositories/secure_storage.dart';
+import 'package:pigfarm/repositories/user_repository.dart';
 import 'package:pigfarm/welcome.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-void main() => runApp(MyApp());
+import 'app.dart';
+
+void main() => runApp(App(
+      authenticationRepository: AuthenticationRepository(),
+      userRepository: SecureStorage(),
+    ));
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.

@@ -22,7 +22,7 @@ class HomeScreen extends StatelessWidget {
                     width: double.infinity,
                     height: double.infinity,
                     child: Image.asset(
-                      "assets/welcome_background.png",
+                      "assets/images/welcome_background.png",
                       fit: BoxFit.fill,
                     ),
                   ),
