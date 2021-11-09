@@ -8,7 +8,7 @@ enum AuthenticationStatus { unknown, authenticated, unauthenticated }
 
 class AuthenticationRepository {
   final _controller = StreamController<AuthenticationStatus>();
-  Future<void> logIn(
+  Future<AuthResponse> logIn(
       {required String username, required String password}) async {
     Map data = {'username': username, 'password': password};
     var client = new http.Client();
@@ -24,6 +24,7 @@ class AuthenticationRepository {
           .toJson()
           .toString());
       _controller.add(AuthenticationStatus.authenticated);
+      return AuthResponse.fromJson(json.decode(response.body));
     } finally {
       client.close();
     }

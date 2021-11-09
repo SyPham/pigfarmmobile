@@ -10,11 +10,11 @@ class User {
 
   User.fromJson(Map<String, dynamic> json)
       : username = json["username"],
-        idUser = json["idUser"];
+        idUser = json["id"];
 
   Map<String, dynamic> toJson() => {
         'username': username,
-        'idUser': idUser,
+        'id': idUser,
       };
   static const empty = User('-', '-');
 }

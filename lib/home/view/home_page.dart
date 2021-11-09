@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pigfarm/blocs/authentication/authentication_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatelessWidget {
   static Route route() {
@@ -18,7 +19,7 @@ class HomePage extends StatelessWidget {
             Builder(
               builder: (context) {
                 final userId = context.select(
-                  (AuthenticationBloc bloc) => bloc.state.user.idUser,
+                  (AuthenticationBloc bloc) => bloc.state.user.username,
                 );
                 return Text('UserID: $userId');
               },

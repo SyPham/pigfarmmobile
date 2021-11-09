@@ -1,11 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pigfarm/models/user.dart';
 import 'package:pigfarm/repositories/authentication_repository.dart';
 import 'package:pigfarm/repositories/secure_storage.dart';
-import 'package:pigfarm/repositories/user_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'authentication_event.dart';
 part 'authentication_state.dart';
@@ -64,7 +65,10 @@ class AuthenticationBloc
 
   Future<User?> _tryGetUser() async {
     try {
-      final user = await _userRepository.getUser();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var data = prefs.get('user');
+      var json = jsonDecode(data.toString());
+      final user = User.fromJson(json);
       return user;
     } on Exception {
       return null;

@@ -10,34 +10,6 @@ import 'login_form.dart';
 import 'dart:math';
 import 'package:pigfarm/widgets/customClipper.dart';
 
-
-class LoginPage2 extends StatelessWidget {
-  static Route route() {
-    return MaterialPageRoute<void>(builder: (_) => LoginPage());
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
-      body: Padding(
-        padding: const EdgeInsets.all(12),
-        child: BlocProvider(
-          create: (context) {
-            return LoginBloc(
-              authenticationRepository:
-                  RepositoryProvider.of<AuthenticationRepository>(context),
-                   userRepository:
-                  RepositoryProvider.of<SecureStorage>(context),
-            );
-          },
-          child: LoginForm(),
-        ),
-      ),
-    );
-  }
-}
-
 class LoginPage extends StatelessWidget {
   static Route route() {
     return MaterialPageRoute<void>(builder: (_) => LoginPage());
@@ -81,11 +53,9 @@ class LoginPage extends StatelessWidget {
             child: BlocProvider(
               create: (context) {
                 return LoginBloc(
-                  authenticationRepository:
-                      RepositoryProvider.of<AuthenticationRepository>(context),
-                   userRepository:
-                  RepositoryProvider.of<SecureStorage>(context),
-                );
+                    authenticationRepository:
+                        RepositoryProvider.of<AuthenticationRepository>(
+                            context));
               },
               child: LoginForm(),
             ),
